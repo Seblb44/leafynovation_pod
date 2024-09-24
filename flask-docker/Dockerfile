@@ -17,13 +17,13 @@ RUN apt-get update && apt-get install -y git
 RUN pip install --upgrade pip
 
 # Clone your GitHub repository with the latest commit
-RUN git clone https://${GIT_USERNAME}:${GIT_ACCESS_TOKEN}@github.com/Seblb44/Leafynovation_pod.git
+RUN git clone https://${GIT_USERNAME}:${GIT_ACCESS_TOKEN}@github.com/Seblb44/leafynovation_pod.git
 
 # Change working directory to the flask-app folder inside the cloned repo
-WORKDIR /app/Leafynovation_pod/flask-app
+WORKDIR /app/leafynovation_pod/flask-app
 
 # DEBUG: Show directory contents to ensure the correct path is used
-RUN ls -la /app/Leafynovation_pod/flask-app
+RUN ls -la /app/leafynovation_pod/flask-app
 
 # Install Python dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
