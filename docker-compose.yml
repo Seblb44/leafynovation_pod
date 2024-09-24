@@ -76,6 +76,4 @@ services:
       - ${PORT_HOMEASSISTANT}:8123
     restart: unless-stopped
     privileged: true
-networks:
-  default:
-    name: leafynovation_network
+networks: {}
