@@ -1,0 +1,70 @@
+services:
+  influxdb:
+    image: influxdb:${INFLUXDB_VERSION}
+    container_name: influxdb
+    ports:
+      - ${PORT_INFLUXDB}:8086
+    volumes:
+      - ${IOTAPPDIR}/influxdb/data:/var/lib/influxdb2
+      - ${IOTAPPDIR}/influxdb/config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
+    restart: unless-stopped
+  node-red:
+    stdin_open: true
+    tty: true
+    ports:
+      - ${PORT_NODERED}:1880
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${IOTAPPDIR}/node-red/data:/data
+    container_name: node-red
+    image: nodered/node-red:latest
+    restart: unless-stopped
+  mqttx:
+    image: emqx/mqttx-web:latest
+    container_name: mqttx
+    ports:
+      - ${PORT_MQTTX}:80
+    restart: unless-stopped
+  mosquitto-mqtt:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto-mqtt
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    ports:
+      - ${PORT_MQTT_MOSQUITTO_HTTP}:1883
+      - ${PORT_MQTT_MOSQUITTO_HTTPS}:9001
+    volumes:
+      # - ${IOTAPPDIR}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf #Custom config file
+      - ${IOTAPPDIR}/mosquitto/data:/mosquitto/data
+      - ${IOTAPPDIR}/mosquitto/log:/mosquitto/log
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    user: ${PUID}:${PGID}
+    ports:
+      - ${PORT_GRAFANA}:3000
+    volumes:
+      - ${IOTAPPDIR}/grafana/data:/var/lib/grafana
+  homeassistant:
+    container_name: iot-homeassistant
+    image: ghcr.io/home-assistant/home-assistant:latest
+    volumes:
+      - ${IOTAPPDIR}/home-assistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    ports:
+      - ${PORT_HOMEASSISTANT}:8123
+    restart: unless-stopped
+    privileged: true
+networks:
+  default:
+    name: leafynovation_network
