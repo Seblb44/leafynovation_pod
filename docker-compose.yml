@@ -1,4 +1,15 @@
 services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: flask-docker/Dockerfile
+    ports:
+      - ${PORT_FLASK}:5000"
+    restart: always
+    volumes:
+      - ${IOTAPPDIR}/flask-app:/app
+    environment:
+      - FLASK_ENV=production
   influxdb:
     image: influxdb:${INFLUXDB_VERSION}
     container_name: influxdb
