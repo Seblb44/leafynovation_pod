@@ -28,12 +28,13 @@ services:
   node-red:
     stdin_open: true
     tty: true
+    user: ${PUID}
     ports:
       - ${PORT_NODERED}:1880
     environment:
       - TZ=${TZ}
     volumes:
-      - ${IOTAPPDIR}/node-red/data:/data
+      - ${IOTAPPDIR}/node-red:/data
     container_name: node-red
     image: nodered/node-red:latest
     restart: unless-stopped
