@@ -14,7 +14,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y git
 
 # Clone your GitHub repository with the latest commit
-RUN git clone https://${GIT_USERNAME}:${GIT_ACCESS_TOKEN}@github.com/Seblb44/Leafynovation_pod.git /tmp
+RUN git clone https://${GIT_USERNAME}:${GIT_ACCESS_TOKEN}@github.com/Seblb44/Leafynovation_pod.git /tmp/Leafynovation_pod
 
 # Copy the flask-app folder from the cloned repo to the working directory
 COPY /tmp/Leafynovation_pod/flask-app /app
