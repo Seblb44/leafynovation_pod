@@ -23,7 +23,7 @@ COPY /tmp/Leafynovation_pod/flask-app /app
 RUN pip install --no-cache-dir -r /app/flask-app/requirements.txt
 
 # Copy all files from the repository to the container
-COPY /app/flask-app /app
+# COPY /app/flask-app /app
 
 # Expose the Flask app port
 EXPOSE 5000
